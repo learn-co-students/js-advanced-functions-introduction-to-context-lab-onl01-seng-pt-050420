@@ -1,4 +1,4 @@
-let createEmployeeRecord = function(arr){
+function createEmployeeRecord(arr){
     let obj = {}
     obj.firstName = arr[0]
     obj.familyName = arr[1]
@@ -33,29 +33,11 @@ function createTimeOutEvent(empObj, dateStamp){
     return empObj
 }
 
-// let danielObj = 
-// {
-//     firstName: "Daniel",
-//     familyName: "Kwon",
-//     title: "IT Analyst",
-//     payPerHour: "25"
-//     timeInEvents: [{
-//         type: "TimeIn",
-//         date: "YYYY-MM-DD",
-//         hour: 1200
-//     }]
-//     timeOutEvents: [{
-//         type = "TimeOut",
-//         date: "YYYY-MM-DD",
-//         hour: 1200
-//     }]
-// }
-
 function hoursWorkedOnDate(empObj, date){
     let timeIn = empObj.timeInEvents.find(element => element.date === date).hour
     let timeOut = empObj.timeOutEvents.find(element => element.date === date).hour
     let hoursWorked = (timeOut - timeIn)/100
-    return hoursWorked // integer
+    return hoursWorked
 }
 
 function wagesEarnedOnDate(empObj, date){
