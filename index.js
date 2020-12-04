@@ -1,36 +1,36 @@
-function createEmployeeRecord(array){
+let createEmployeeRecord = function(arr){
     let obj = {}
-    obj.firstName = array[0]
-    obj.familyName = array[1]
-    obj.title = array[2]
-    obj.payPerHour = array[3]
+    obj.firstName = arr[0]
+    obj.familyName = arr[1]
+    obj.title = arr[2]
+    obj.payPerHour = arr[3]
     obj.timeInEvents = []
     obj.timeOutEvents = []
     return obj
 }
 
-function createEmployeeRecords(arrayOfArrays){
-    return arrayOfArrays.map(function(array){
+function createEmployeeRecords(empArr){
+    return empArr.map(function(array){
         return createEmployeeRecord(array)
     })
 }
 
-function createTimeInEvent(employeeObject, dateStamp){
+function createTimeInEvent(empObj, dateStamp){
     let obj = {}
     obj.type = "TimeIn"
     obj.date = dateStamp.slice(0, 10)
     obj.hour = Number(dateStamp.slice(-4))
-    employeeObject.timeInEvents.push(obj)
-    return employeeObject
+    empObj.timeInEvents.push(obj)
+    return empObj
 }
 
-function createTimeOutEvent(employeeObject, dateStamp){
+function createTimeOutEvent(empObj, dateStamp){
     let obj = {}
     obj.type = "TimeOut"
     obj.date = dateStamp.slice(0, 10)
     obj.hour = Number(dateStamp.slice(-4))
-    employeeObject.timeOutEvents.push(obj)
-    return employeeObject
+    empObj.timeOutEvents.push(obj)
+    return empObj
 }
 
 // let danielObj = 
@@ -51,22 +51,32 @@ function createTimeOutEvent(employeeObject, dateStamp){
 //     }]
 // }
 
-function hoursWorkedOnDate(employeeObject, date){
-    let timeIn = employeeObject.timeInEvents.find(element => element.date === date).hour
-    let timeOut = employeeObject.timeOutEvents.find(element => element.date === date).hour
+function hoursWorkedOnDate(empObj, date){
+    let timeIn = empObj.timeInEvents.find(element => element.date === date).hour
+    let timeOut = empObj.timeOutEvents.find(element => element.date === date).hour
     let hoursWorked = (timeOut - timeIn)/100
     return hoursWorked // integer
 }
 
-function wagesEarnedOnDate(employeeObject, date){
-    hoursWorked = hoursWorkedOnDate(employeeObject, date)
-    payOwed = hoursWorked * employeeObject.payPerHour
-    return payOwed
+function wagesEarnedOnDate(empObj, date){
+    let hoursWorked = hoursWorkedOnDate(empObj, date)
+    let payOwed = hoursWorked * empObj.payPerHour
+    return parseFloat(payOwed)
 }
 
-function allWagesFor(employeeObject){
-    datesWorked = employeeObject.timeOutEvents.map(element => element.date)
-    wagesArray = datesWorked.map(element => wagesEarnedOnDate(employeeObject, element))
-    payOwed = wagesArray.reduce((accumulator, currentVal) => accumulator + currentVal, 0)
-    return payOwed
+function allWagesFor(empObj){
+    let datesWorked = empObj.timeOutEvents.map(element => element.date)
+    let wagesArray = datesWorked.map(element => wagesEarnedOnDate(empObj, element))
+    let payOwed = wagesArray.reduce((acc, val) => acc + val, 0)
+    return parseFloat(payOwed)
+}
+
+function findEmployeeByFirstName(empArr, firstName){
+    return empArr.find(emp => emp.firstName === firstName)
+}
+
+function calculatePayroll(empArr){
+    let payrollArr = empArr.map(emp => allWagesFor(emp))
+    let totalPayroll = payrollArr.reduce((acc, val) => acc + val, 0)
+    return totalPayroll
 }
