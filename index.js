@@ -1,1 +1,3 @@
-// Your code here
+function createEmployeeRecord(fistName, familyName, title, payPerHour){
+
+}
